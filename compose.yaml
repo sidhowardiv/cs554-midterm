@@ -1,0 +1,11 @@
+name: cs554-midterm
+services:
+  web:
+    image: cs554-service:1.0
+    environment:
+      PORT: "8080"
+      SERVICE_NAME: cs554-service
+      MESSAGE: Hello from Linux VM Compose
+    ports:
+      - "8088:8080"
+    restart: unless-stopped

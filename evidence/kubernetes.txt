@@ -1,0 +1,527 @@
+
+=== Baseline ===
+deployment "web" successfully rolled out
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web   2/2     2            2           16s   web          cs554-service:1.0   app=cs554-web
+
+NAME                      READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+pod/client                1/1     Running   0          11s   10.42.0.6   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-58gqk   1/1     Running   0          15s   10.42.0.4   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-fb4cb   1/1     Running   0          15s   10.42.0.5   lima-cs554-vm   <none>           <none>
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.43.176.65   <none>        80/TCP    15s   app=cs554-web
+NAME                  READY   STATUS    RESTARTS   AGE   LABELS
+web-ddd46f5c9-58gqk   1/1     Running   0          15s   app=cs554-web,pod-template-hash=ddd46f5c9
+web-ddd46f5c9-fb4cb   1/1     Running   0          15s   app=cs554-web,pod-template-hash=ddd46f5c9
+apiVersion: v1
+items:
+- addressType: IPv4
+  apiVersion: discovery.k8s.io/v1
+  endpoints:
+  - addresses:
+    - 10.42.0.4
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-58gqk
+      namespace: cs554-midterm
+      uid: a7c0dbfe-4dd6-4359-ae47-7c02ec649236
+  - addresses:
+    - 10.42.0.5
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-fb4cb
+      namespace: cs554-midterm
+      uid: f800d0bc-c78c-42e5-9798-0da7289ec8bd
+  kind: EndpointSlice
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2026-10-21T17:06:59Z"
+    creationTimestamp: "2026-10-21T17:06:50Z"
+    generateName: web-
+    generation: 5
+    labels:
+      endpointslice.kubernetes.io/managed-by: endpointslice-controller.k8s.io
+      kubernetes.io/service-name: web
+    name: web-68c4v
+    namespace: cs554-midterm
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Service
+      name: web
+      uid: 673b1a3c-f812-48bf-a17e-9d5e52237fb4
+    resourceVersion: "450"
+    uid: 84f0d162-cab6-4337-864e-e85f1e24e856
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+kind: List
+metadata:
+  resourceVersion: ""
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":1}
+HTTP 200 {"status":"ok"}
+
+=== Pod deletion / replacement ===
+NAME                  READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+web-ddd46f5c9-58gqk   1/1     Running   0          17s   10.42.0.4   lima-cs554-vm   <none>           <none>
+pod "web-ddd46f5c9-58gqk" deleted
+pod/web-ddd46f5c9-cxhs2 condition met
+pod/web-ddd46f5c9-fb4cb condition met
+deployment "web" successfully rolled out
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web   2/2     2            2           21s   web          cs554-service:1.0   app=cs554-web
+
+NAME                      READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+pod/client                1/1     Running   0          16s   10.42.0.6   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-cxhs2   1/1     Running   0          3s    10.42.0.7   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-fb4cb   1/1     Running   0          20s   10.42.0.5   lima-cs554-vm   <none>           <none>
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.43.176.65   <none>        80/TCP    20s   app=cs554-web
+NAME                  READY   STATUS    RESTARTS   AGE   LABELS
+web-ddd46f5c9-cxhs2   1/1     Running   0          3s    app=cs554-web,pod-template-hash=ddd46f5c9
+web-ddd46f5c9-fb4cb   1/1     Running   0          20s   app=cs554-web,pod-template-hash=ddd46f5c9
+apiVersion: v1
+items:
+- addressType: IPv4
+  apiVersion: discovery.k8s.io/v1
+  endpoints:
+  - addresses:
+    - 10.42.0.5
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-fb4cb
+      namespace: cs554-midterm
+      uid: f800d0bc-c78c-42e5-9798-0da7289ec8bd
+  - addresses:
+    - 10.42.0.7
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-cxhs2
+      namespace: cs554-midterm
+      uid: 7fe40755-bf23-4374-8b0a-c3777805b077
+  kind: EndpointSlice
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2026-10-21T17:07:09Z"
+    creationTimestamp: "2026-10-21T17:06:50Z"
+    generateName: web-
+    generation: 9
+    labels:
+      endpointslice.kubernetes.io/managed-by: endpointslice-controller.k8s.io
+      kubernetes.io/service-name: web
+    name: web-68c4v
+    namespace: cs554-midterm
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Service
+      name: web
+      uid: 673b1a3c-f812-48bf-a17e-9d5e52237fb4
+    resourceVersion: "481"
+    uid: 84f0d162-cab6-4337-864e-e85f1e24e856
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+kind: List
+metadata:
+  resourceVersion: ""
+
+=== Selector failure: app=cs554-web -> app=does-not-exist ===
+service/web patched
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web   2/2     2            2           26s   web          cs554-service:1.0   app=cs554-web
+
+NAME                      READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+pod/client                1/1     Running   0          21s   10.42.0.6   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-cxhs2   1/1     Running   0          8s    10.42.0.7   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-fb4cb   1/1     Running   0          25s   10.42.0.5   lima-cs554-vm   <none>           <none>
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.43.176.65   <none>        80/TCP    25s   app=does-not-exist
+NAME                  READY   STATUS    RESTARTS   AGE   LABELS
+web-ddd46f5c9-cxhs2   1/1     Running   0          9s    app=cs554-web,pod-template-hash=ddd46f5c9
+web-ddd46f5c9-fb4cb   1/1     Running   0          26s   app=cs554-web,pod-template-hash=ddd46f5c9
+apiVersion: v1
+items:
+- addressType: IPv4
+  apiVersion: discovery.k8s.io/v1
+  endpoints: null
+  kind: EndpointSlice
+  metadata:
+    creationTimestamp: "2026-10-21T17:06:50Z"
+    generateName: web-
+    generation: 10
+    labels:
+      endpointslice.kubernetes.io/managed-by: endpointslice-controller.k8s.io
+      kubernetes.io/service-name: web
+    name: web-68c4v
+    namespace: cs554-midterm
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Service
+      name: web
+      uid: 673b1a3c-f812-48bf-a17e-9d5e52237fb4
+    resourceVersion: "486"
+    uid: 84f0d162-cab6-4337-864e-e85f1e24e856
+  ports: null
+kind: List
+metadata:
+  resourceVersion: ""
+TypeError fetch failed
+command terminated with exit code 1
+Expected client failure observed
+
+=== Selector recovery ===
+service/web patched
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web   2/2     2            2           33s   web          cs554-service:1.0   app=cs554-web
+
+NAME                      READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+pod/client                1/1     Running   0          28s   10.42.0.6   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-cxhs2   1/1     Running   0          15s   10.42.0.7   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-fb4cb   1/1     Running   0          32s   10.42.0.5   lima-cs554-vm   <none>           <none>
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.43.176.65   <none>        80/TCP    32s   app=cs554-web
+NAME                  READY   STATUS    RESTARTS   AGE   LABELS
+web-ddd46f5c9-cxhs2   1/1     Running   0          15s   app=cs554-web,pod-template-hash=ddd46f5c9
+web-ddd46f5c9-fb4cb   1/1     Running   0          32s   app=cs554-web,pod-template-hash=ddd46f5c9
+apiVersion: v1
+items:
+- addressType: IPv4
+  apiVersion: discovery.k8s.io/v1
+  endpoints:
+  - addresses:
+    - 10.42.0.5
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-fb4cb
+      namespace: cs554-midterm
+      uid: f800d0bc-c78c-42e5-9798-0da7289ec8bd
+  - addresses:
+    - 10.42.0.7
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-cxhs2
+      namespace: cs554-midterm
+      uid: 7fe40755-bf23-4374-8b0a-c3777805b077
+  kind: EndpointSlice
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2026-10-21T17:06:58Z"
+    creationTimestamp: "2026-10-21T17:06:50Z"
+    generateName: web-
+    generation: 11
+    labels:
+      endpointslice.kubernetes.io/managed-by: endpointslice-controller.k8s.io
+      kubernetes.io/service-name: web
+    name: web-68c4v
+    namespace: cs554-midterm
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Service
+      name: web
+      uid: 673b1a3c-f812-48bf-a17e-9d5e52237fb4
+    resourceVersion: "490"
+    uid: 84f0d162-cab6-4337-864e-e85f1e24e856
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+kind: List
+metadata:
+  resourceVersion: ""
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-cxhs2","requestCount":1}
+
+=== Graduate readiness baseline ===
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web   2/2     2            2           34s   web          cs554-service:1.0   app=cs554-web
+
+NAME                      READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+pod/client                1/1     Running   0          29s   10.42.0.6   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-cxhs2   1/1     Running   0          16s   10.42.0.7   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-fb4cb   1/1     Running   0          33s   10.42.0.5   lima-cs554-vm   <none>           <none>
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.43.176.65   <none>        80/TCP    33s   app=cs554-web
+NAME                  READY   STATUS    RESTARTS   AGE   LABELS
+web-ddd46f5c9-cxhs2   1/1     Running   0          16s   app=cs554-web,pod-template-hash=ddd46f5c9
+web-ddd46f5c9-fb4cb   1/1     Running   0          33s   app=cs554-web,pod-template-hash=ddd46f5c9
+apiVersion: v1
+items:
+- addressType: IPv4
+  apiVersion: discovery.k8s.io/v1
+  endpoints:
+  - addresses:
+    - 10.42.0.5
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-fb4cb
+      namespace: cs554-midterm
+      uid: f800d0bc-c78c-42e5-9798-0da7289ec8bd
+  - addresses:
+    - 10.42.0.7
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-cxhs2
+      namespace: cs554-midterm
+      uid: 7fe40755-bf23-4374-8b0a-c3777805b077
+  kind: EndpointSlice
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2026-10-21T17:06:58Z"
+    creationTimestamp: "2026-10-21T17:06:50Z"
+    generateName: web-
+    generation: 11
+    labels:
+      endpointslice.kubernetes.io/managed-by: endpointslice-controller.k8s.io
+      kubernetes.io/service-name: web
+    name: web-68c4v
+    namespace: cs554-midterm
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Service
+      name: web
+      uid: 673b1a3c-f812-48bf-a17e-9d5e52237fb4
+    resourceVersion: "490"
+    uid: 84f0d162-cab6-4337-864e-e85f1e24e856
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+kind: List
+metadata:
+  resourceVersion: ""
+Selected Pod: web-ddd46f5c9-cxhs2
+7fe40755-bf23-4374-8b0a-c3777805b077 container=containerd://d0c0ddf32be16c5fc15bf4c4388daef55f9703a4dfc0b58eb386033b5a58c601 restarts=0
+pod/web-ddd46f5c9-cxhs2 condition met
+
+=== One Running but NotReady ===
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web   1/2     2            1           40s   web          cs554-service:1.0   app=cs554-web
+
+NAME                      READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+pod/client                1/1     Running   0          35s   10.42.0.6   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-cxhs2   0/1     Running   0          22s   10.42.0.7   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-fb4cb   1/1     Running   0          39s   10.42.0.5   lima-cs554-vm   <none>           <none>
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.43.176.65   <none>        80/TCP    39s   app=cs554-web
+NAME                  READY   STATUS    RESTARTS   AGE   LABELS
+web-ddd46f5c9-cxhs2   0/1     Running   0          22s   app=cs554-web,pod-template-hash=ddd46f5c9
+web-ddd46f5c9-fb4cb   1/1     Running   0          39s   app=cs554-web,pod-template-hash=ddd46f5c9
+apiVersion: v1
+items:
+- addressType: IPv4
+  apiVersion: discovery.k8s.io/v1
+  endpoints:
+  - addresses:
+    - 10.42.0.5
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-fb4cb
+      namespace: cs554-midterm
+      uid: f800d0bc-c78c-42e5-9798-0da7289ec8bd
+  - addresses:
+    - 10.42.0.7
+    conditions:
+      ready: false
+      serving: false
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-cxhs2
+      namespace: cs554-midterm
+      uid: 7fe40755-bf23-4374-8b0a-c3777805b077
+  kind: EndpointSlice
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2026-10-21T17:07:26Z"
+    creationTimestamp: "2026-10-21T17:06:50Z"
+    generateName: web-
+    generation: 12
+    labels:
+      endpointslice.kubernetes.io/managed-by: endpointslice-controller.k8s.io
+      kubernetes.io/service-name: web
+    name: web-68c4v
+    namespace: cs554-midterm
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Service
+      name: web
+      uid: 673b1a3c-f812-48bf-a17e-9d5e52237fb4
+    resourceVersion: "501"
+    uid: 84f0d162-cab6-4337-864e-e85f1e24e856
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+kind: List
+metadata:
+  resourceVersion: ""
+200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-cxhs2","requestCount":2}
+7fe40755-bf23-4374-8b0a-c3777805b077 container=containerd://d0c0ddf32be16c5fc15bf4c4388daef55f9703a4dfc0b58eb386033b5a58c601 restarts=0
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":2}
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":3}
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":4}
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":5}
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":6}
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":7}
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":8}
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-fb4cb","requestCount":9}
+
+=== Readiness recovery ===
+pod/web-ddd46f5c9-cxhs2 condition met
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES              SELECTOR
+deployment.apps/web   2/2     2            2           48s   web          cs554-service:1.0   app=cs554-web
+
+NAME                      READY   STATUS    RESTARTS   AGE   IP          NODE            NOMINATED NODE   READINESS GATES
+pod/client                1/1     Running   0          43s   10.42.0.6   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-cxhs2   1/1     Running   0          30s   10.42.0.7   lima-cs554-vm   <none>           <none>
+pod/web-ddd46f5c9-fb4cb   1/1     Running   0          47s   10.42.0.5   lima-cs554-vm   <none>           <none>
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/web   ClusterIP   10.43.176.65   <none>        80/TCP    47s   app=cs554-web
+NAME                  READY   STATUS    RESTARTS   AGE   LABELS
+web-ddd46f5c9-cxhs2   1/1     Running   0          30s   app=cs554-web,pod-template-hash=ddd46f5c9
+web-ddd46f5c9-fb4cb   1/1     Running   0          47s   app=cs554-web,pod-template-hash=ddd46f5c9
+apiVersion: v1
+items:
+- addressType: IPv4
+  apiVersion: discovery.k8s.io/v1
+  endpoints:
+  - addresses:
+    - 10.42.0.5
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-fb4cb
+      namespace: cs554-midterm
+      uid: f800d0bc-c78c-42e5-9798-0da7289ec8bd
+  - addresses:
+    - 10.42.0.7
+    conditions:
+      ready: true
+      serving: true
+      terminating: false
+    nodeName: lima-cs554-vm
+    targetRef:
+      kind: Pod
+      name: web-ddd46f5c9-cxhs2
+      namespace: cs554-midterm
+      uid: 7fe40755-bf23-4374-8b0a-c3777805b077
+  kind: EndpointSlice
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2026-10-21T17:07:34Z"
+    creationTimestamp: "2026-10-21T17:06:50Z"
+    generateName: web-
+    generation: 13
+    labels:
+      endpointslice.kubernetes.io/managed-by: endpointslice-controller.k8s.io
+      kubernetes.io/service-name: web
+    name: web-68c4v
+    namespace: cs554-midterm
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Service
+      name: web
+      uid: 673b1a3c-f812-48bf-a17e-9d5e52237fb4
+    resourceVersion: "510"
+    uid: 84f0d162-cab6-4337-864e-e85f1e24e856
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+kind: List
+metadata:
+  resourceVersion: ""
+HTTP 200 {"service":"cs554-service","message":"Hello from Kubernetes","hostname":"web-ddd46f5c9-cxhs2","requestCount":3}
+7fe40755-bf23-4374-8b0a-c3777805b077 container=containerd://d0c0ddf32be16c5fc15bf4c4388daef55f9703a4dfc0b58eb386033b5a58c601 restarts=0
+Listening on port 8080
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/","status":200}
+{"method":"GET","path":"/health","status":503}
+{"method":"GET","path":"/health","status":503}
+{"method":"GET","path":"/health","status":503}
+{"method":"GET","path":"/health","status":503}
+{"method":"GET","path":"/health","status":503}
+{"method":"GET","path":"/","status":200}
+{"method":"GET","path":"/health","status":503}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/health","status":200}
+{"method":"GET","path":"/","status":200}
+{"method":"GET","path":"/health","status":200}

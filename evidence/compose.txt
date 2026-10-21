@@ -1,0 +1,128 @@
++ date -u
+Wed Oct 21 16:58:33 UTC 2026
++ /opt/homebrew/bin/limactl list cs554-vm
+NAME        STATUS     SSH                VMTYPE    ARCH       CPUS    MEMORY    DISK     DIR
+cs554-vm    Running    127.0.0.1:63624    vz        aarch64    2       2GiB      12GiB    ~/.lima/cs554-vm
++ /opt/homebrew/bin/limactl shell cs554-vm uname -a
+Linux lima-cs554-vm 7.0.0-34-generic #34-Ubuntu SMP PREEMPT_DYNAMIC Wed Sep  2 14:34:54 UTC 2026 aarch64 GNU/Linux
++ /opt/homebrew/bin/limactl shell cs554-vm cat /etc/os-release
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04.1 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=resolute
+LOGO=ubuntu-logo
++ /opt/homebrew/bin/limactl shell cs554-vm ip -4 addr show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    altname enx525555eea2fd
+    inet 192.168.5.15/24 metric 200 brd 192.168.5.255 scope global dynamic eth0
+       valid_lft 2897sec preferred_lft 2897sec
+3: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default 
+    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+       valid_lft forever preferred_lft forever
++ /opt/homebrew/bin/limactl shell cs554-vm ip route
+default via 192.168.5.2 dev eth0 proto dhcp src 192.168.5.15 metric 200 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+192.168.5.0/24 dev eth0 proto kernel scope link src 192.168.5.15 metric 200 
+192.168.5.2 dev eth0 proto dhcp scope link src 192.168.5.15 metric 200 
++ /opt/homebrew/bin/limactl shell cs554-vm docker version
+Client: Docker Engine - Community
+ Version:           29.9.2
+ API version:       1.56
+ Go version:        go1.26.10
+ Git commit:        a82e528
+ Built:             Tue Oct 20 18:44:33 2026
+ OS/Arch:           linux/arm64
+ Context:           rootless
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          29.9.2
+  API version:      1.56 (minimum version 1.40)
+  Go version:       go1.26.10
+  Git commit:       0367cbe
+  Built:            Tue Oct 20 18:44:33 2026
+  OS/Arch:          linux/arm64
+  Experimental:     false
+ containerd:
+  Version:          v2.4.2
+  GitCommit:        b7a25261e029d68978bbf290df0a62fc819b3c51
+ runc:
+  Version:          1.5.2
+  GitCommit:        v1.5.2-0-g29dd3dc2
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+ rootlesskit:
+  Version:          3.3.0
+  ApiVersion:       1.1.3
+  NetworkDriver:    gvisor-tap-vsock
+  PortDriver:       builtin
+  StateDir:         /run/user/502/dockerd-rootless
++ /opt/homebrew/bin/limactl shell cs554-vm docker compose version
+Docker Compose version v5.6.1
++ /opt/homebrew/bin/limactl shell cs554-vm docker image inspect cs554-service:1.0 --format '{{.Id}}'
+sha256:50ab79533c9d12bd3a51495a5231118205e5d5975c5fa92f7cdf962ad4cb19e0
++ /opt/homebrew/bin/limactl shell cs554-vm bash -lc 'cd "$1" && docker compose up -d' _ /Users/sidneyhowardiv/Documents/Codex/2026-10-21/d/outputs/cs554-project
+ Network cs554-midterm_default Creating 
+ Network cs554-midterm_default Creating 
+ Network cs554-midterm_default Created 
+ Network cs554-midterm_default Created 
+ Container cs554-midterm-web-1 Creating 
+ Container cs554-midterm-web-1 Created 
+ Container cs554-midterm-web-1 Starting 
+ Container cs554-midterm-web-1 Started 
++ /opt/homebrew/bin/limactl shell cs554-vm curl --retry 10 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:8088/
+{"service":"cs554-service","message":"Hello from Linux VM Compose","hostname":"4d0f384ef95f","requestCount":1}+ /opt/homebrew/bin/limactl shell cs554-vm curl -fsS http://127.0.0.1:8088/health
+{"status":"ok"}+ printf '\nHOST REQUESTS\n'
+
+HOST REQUESTS
++ curl --retry 10 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:8088/
+{"service":"cs554-service","message":"Hello from Linux VM Compose","hostname":"4d0f384ef95f","requestCount":2}+ curl -fsS http://127.0.0.1:8088/health
+{"status":"ok"}+ /opt/homebrew/bin/limactl shell cs554-vm bash -lc 'cd "$1" && docker compose ps && docker compose logs --tail=20' _ /Users/sidneyhowardiv/Documents/Codex/2026-10-21/d/outputs/cs554-project
+NAME                  IMAGE               COMMAND                  SERVICE   CREATED          STATUS          PORTS
+cs554-midterm-web-1   cs554-service:1.0   "docker-entrypoint.s…"   web       28 seconds ago   Up 25 seconds   0.0.0.0:8088->8080/tcp, [::]:8088->8080/tcp
+web-1  | Listening on port 8080
+web-1  | {"method":"GET","path":"/","status":200}
+web-1  | {"method":"GET","path":"/health","status":200}
+web-1  | {"method":"GET","path":"/","status":200}
+web-1  | {"method":"GET","path":"/health","status":200}
++ printf '\nCOUNTER BEFORE RESTART\n'
+
+COUNTER BEFORE RESTART
++ /opt/homebrew/bin/limactl shell cs554-vm curl -fsS http://127.0.0.1:8088/
+{"service":"cs554-service","message":"Hello from Linux VM Compose","hostname":"4d0f384ef95f","requestCount":3}+ /opt/homebrew/bin/limactl shell cs554-vm bash -lc 'cd "$1" && docker compose restart web' _ /Users/sidneyhowardiv/Documents/Codex/2026-10-21/d/outputs/cs554-project
+ Container cs554-midterm-web-1 Restarting 
+ Container cs554-midterm-web-1 Started 
++ printf '\nFIRST ROOT REQUEST AFTER RESTART\n'
+
+FIRST ROOT REQUEST AFTER RESTART
++ /opt/homebrew/bin/limactl shell cs554-vm curl --retry 10 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:8088/
+{"service":"cs554-service","message":"Hello from Linux VM Compose","hostname":"4d0f384ef95f","requestCount":1}+ /opt/homebrew/bin/limactl shell cs554-vm bash -lc 'cd "$1" && docker compose ps && docker compose logs --tail=20' _ /Users/sidneyhowardiv/Documents/Codex/2026-10-21/d/outputs/cs554-project
+NAME                  IMAGE               COMMAND                  SERVICE   CREATED          STATUS         PORTS
+cs554-midterm-web-1   cs554-service:1.0   "docker-entrypoint.s…"   web       52 seconds ago   Up 7 seconds   0.0.0.0:8088->8080/tcp, [::]:8088->8080/tcp
+web-1  | Listening on port 8080
+web-1  | {"method":"GET","path":"/","status":200}
+web-1  | {"method":"GET","path":"/health","status":200}
+web-1  | {"method":"GET","path":"/","status":200}
+web-1  | {"method":"GET","path":"/health","status":200}
+web-1  | {"method":"GET","path":"/","status":200}
+web-1  | Received SIGTERM; stopping.
+web-1  | Listening on port 8080
+web-1  | {"method":"GET","path":"/","status":200}
++ printf '\nHOST AFTER RESTART\n'
+
+HOST AFTER RESTART
++ curl -fsS http://127.0.0.1:8088/
+{"service":"cs554-service","message":"Hello from Linux VM Compose","hostname":"4d0f384ef95f","requestCount":2}+ printf '\n'
+

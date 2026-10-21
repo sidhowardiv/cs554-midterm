@@ -1,0 +1,8 @@
+.git
+evidence
+node_modules
+*.tar
+*.md
+scripts
+k8s
+video/

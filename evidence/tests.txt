@@ -1,0 +1,30 @@
+
+> cs454-midterm-starter@1.0.0 test
+> node --test test/service.test.js
+
+TAP version 13
+# {"method":"GET","path":"/","status":200}
+# {"method":"GET","path":"/health","status":200}
+# {"method":"GET","path":"/","status":200}
+# {"method":"GET","path":"/missing","status":404}
+# {"method":"GET","path":"/","status":200}
+# Subtest: configured responses, local counter, health, and fresh instance
+ok 1 - configured responses, local counter, health, and fresh instance
+  ---
+  duration_ms: 1667.804209
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4782.970085
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

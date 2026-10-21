@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: cs554-midterm
+spec:
+  containers:
+    - name: client
+      image: cs554-service:1.0
+      imagePullPolicy: Never
+      command: ["node", "-e", "setInterval(()=>{}, 3600000)"]
+  restartPolicy: Never
